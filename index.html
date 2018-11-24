@@ -49,6 +49,8 @@
       renderer.view.style.position = "absolute";
       renderer.view.style.display = "block";
       renderer.autoResize = true;
+      renderer.resize(window.innerWidth, window.innerHeight);
+
       kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]);
       rino = new Sprite(resources["img/rino_3.png"].texture);
 
@@ -72,7 +74,6 @@
       requestAnimationFrame(gameLoop);
       state();
 
-      renderer.resize(window.innerWidth, window.innerHeight);
       renderer.render(stage);
 
     }
@@ -81,6 +82,10 @@
       rino.x += rino.vx;
       rino.y += rino.vy;
     }
+
+    window.onresize = function () {
+      renderer.resize(window.innerWidth, window.innerHeight);
+    };
 
 </script>
 </body>

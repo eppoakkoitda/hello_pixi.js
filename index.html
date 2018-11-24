@@ -48,8 +48,9 @@
     //renderer.render(stage);
 
     loader
-      .add("img/kokkoro.png")
-      .add("img/rino_3.png")
+      .add(["img/kokkoro.png",
+            "img/rino_3.png"
+      ])
       .load(setup);
 
     function setup() {

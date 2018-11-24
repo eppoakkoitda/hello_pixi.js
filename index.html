@@ -17,6 +17,13 @@
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.3/pixi.min.js"></script>
 <script type="text/javascript">
+
+    var Container = PIXI.Container,
+    autoDetectRenderer = PIXI.autoDetectRenderer,
+    loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    Sprite = PIXI.Sprite;
+
     var type = "WebGL";
     if(!PIXI.utils.isWebGLSupported()){
       type = "canvas"
@@ -24,7 +31,8 @@
     PIXI.utils.sayHello(type);
 
     // 新しいレンダラー作る
-    var renderer = PIXI.autoDetectRenderer(256, 256);
+    var stage = new Container(),
+        renderer = autoDetectRenderer(256, 256);
     renderer.view.style.position = "absolute";
     renderer.view.style.display = "block";
     renderer.autoResize = true;
@@ -39,15 +47,14 @@
     // レンダラーにstageを受け入れてって伝える
     //renderer.render(stage);
 
-    PIXI.loader
-    .add("img/kokkoro.png")
-    .load(setup);
+    loader
+      .add("img/kokkoro.png")
+      .load(setup);
 
     function setup() {
-      var sprite = new PIXI.Sprite(
-        PIXI.loader.resources["img/kokkoro.png"].texture
-      );
-      renderer.render(sprite);
+      var kokkoro = new Sprite(resources["img/kokkoro.png"].texture);
+      stage.addChild(kokkoro);
+      renderer.render(stage);
     }
 
 </script>

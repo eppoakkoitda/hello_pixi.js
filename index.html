@@ -33,19 +33,9 @@
     // 新しいレンダラー作る
     var stage = new Container(),
         renderer = autoDetectRenderer(256, 256);
-    renderer.view.style.position = "absolute";
-    renderer.view.style.display = "block";
-    renderer.autoResize = true;
-    renderer.resize(window.innerWidth, window.innerHeight);
 
     // それをHTMLファイルに入れる
     document.body.appendChild(renderer.view);
-
-    // stageという名前の容器（オプジェクト）を作る
-    //var stage = new PIXI.Container();
-
-    // レンダラーにstageを受け入れてって伝える
-    //renderer.render(stage);
 
     loader
       .add(["img/kokkoro.json",
@@ -70,6 +60,11 @@
 
       state = play;
 
+      renderer.view.style.position = "absolute";
+      renderer.view.style.display = "block";
+      renderer.autoResize = true;
+      renderer.resize(window.innerWidth, window.innerHeight);
+
       gameLoop();
 
     }
@@ -83,8 +78,6 @@
     }
 
     function play(){
-      rino.vx = 1;
-      rino.vy = 1;
       rino.x += rino.vx;
       rino.y += rino.vy;
     }

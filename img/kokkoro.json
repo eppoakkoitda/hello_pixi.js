@@ -1,0 +1,41 @@
+{"frames": {
+  "test_0-0.png":
+  {
+    "frame": {"x":0,"y":0,"w":200,"h":200},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+    "sourceSize": {"w":120,"h":120}
+  },
+  "test_1-0.png":
+  {
+    "frame": {"x":200,"y":0,"w":200,"h":200},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+    "sourceSize": {"w":200,"h":200}
+  },
+  "test_0-1.png":
+  {
+    "frame": {"x":0,"y":200,"w":200,"h":200},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+    "sourceSize": {"w":200,"h":200}
+  },
+  "test_1-1.png":
+  {
+    "frame": {"x":200,"y":200,"w":200,"h":200},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+    "sourceSize": {"w":200,"h":200}
+  }
+},
+"meta": {
+  "image": "kokkoro.png",
+  "format": "RGBA8888",
+  "size": {"w":400,"h":400},
+  "scale": "1"
+}
+}

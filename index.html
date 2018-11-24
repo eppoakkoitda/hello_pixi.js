@@ -48,13 +48,13 @@
     //renderer.render(stage);
 
     loader
-      .add(["img/kokkoro.png",
+      .add(["img/kokkoro.json",
             "img/rino_3.png"
       ])
       .load(setup);
 
     function setup() {
-      var kokkoro = new Sprite(resources["img/kokkoro.png"].texture),
+      var kokkoro = new Sprite(resources["img/kokkoro.json"].texture.["kokkoro_0-0.png"]),
           rino = new Sprite(resources["img/rino_3.png"].texture);
 
       stage.addChild(kokkoro);

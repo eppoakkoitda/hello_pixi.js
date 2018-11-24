@@ -65,16 +65,28 @@
       kokkoro.position.set(50, 0);
       rino.position.set(0, 128);
 
+      rino.vx = 0;
+      rino.vy = 0;
+
+      state = play;
+
       gameLoop();
 
     }
 
     function gameLoop(){
 
-      rino.y += 1;
       requestAnimationFrame(gameLoop);
+      state();
       renderer.render(stage);
 
+    }
+
+    function play(){
+      rino.vx = 1;
+      rino.vy = 1;
+      rino.x += rino.vx;
+      rino.y += rino.vy;
     }
 
 </script>

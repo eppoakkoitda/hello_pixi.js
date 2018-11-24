@@ -52,8 +52,12 @@
       .load(setup);
 
     function setup() {
-      var kokkoro = new Sprite(resources["img/kokkoro.png"].texture);
+      var kokkoro = new Sprite(resources["img/kokkoro.png"].texture),
+          rino = new Sprite(resources["img/rino_3.png"].texture);
+
       stage.addChild(kokkoro);
+      stage.addChild(rino);
+
       renderer.render(stage);
     }
 

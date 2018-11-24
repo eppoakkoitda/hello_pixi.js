@@ -53,9 +53,11 @@
       ])
       .load(setup);
 
+    var kokkoro,rino;
+
     function setup() {
-      var kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]),
-          rino = new Sprite(resources["img/rino_3.png"].texture);
+      kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]);
+      rino = new Sprite(resources["img/rino_3.png"].texture);
 
       stage.addChild(kokkoro);
       stage.addChild(rino);
@@ -63,7 +65,16 @@
       kokkoro.position.set(50, 0);
       rino.position.set(0, 128);
 
+      gameLoop();
+
+    }
+
+    function gameloop(){
+
+      rino.y += 1;
+      requestAnimationFrame(gameLoop);
       renderer.render(stage);
+
     }
 
 </script>

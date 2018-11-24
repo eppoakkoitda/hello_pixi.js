@@ -40,12 +40,12 @@
     //renderer.render(stage);
 
     PIXI.loader
-    .add("img/test.png")
+    .add("img/kokkoro.png")
     .load(setup);
 
     function setup() {
       var sprite = new PIXI.Sprite(
-        PIXI.loader.resources["img/test.png"].texture
+        PIXI.loader.resources["img/kokkoro.png"].texture
       );
       renderer.render(sprite);
     }

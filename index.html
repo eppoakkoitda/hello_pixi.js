@@ -37,6 +37,8 @@
     // それをHTMLファイルに入れる
     document.body.appendChild(renderer.view);
 
+    document.addEventListener('keydown', onKeyDown);
+
     loader
       .add(["img/kokkoro.json",
             "img/rino_3.png"

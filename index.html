@@ -64,55 +64,79 @@
       rino.vy = 0;
 
 
-      // キーコード
-       var left = keyboard(37),
-           up = keyboard(38),
-           right = keyboard(39),
-           down = keyboard(40);
+      // // キーコード
+      //  var left = keyboard(37),
+      //      up = keyboard(38),
+      //      right = keyboard(39),
+      //      down = keyboard(40);
+      //
+      //  // 左
+      //  left.press = function() {
+      //
+      //  };
+      //  left.release = function() {
+      //    if (!right.isDown && rino.vy === 0) {
+      //      rino.vx = 0;
+      //    }
+      //  };
+      //
+      //  // 上
+      //  up.press = function() {
+      //
+      //  };
+      //  up.release = function() {
+      //    if (!down.isDown && rino.vx === 0) {
+      //      rino.vy = 0;
+      //    }
+      //  };
+      //
+      //  // 右
+      //  right.press = function() {
+      //
+      //  };
+      //  right.release = function() {
+      //    if (!left.isDown && rino.vy === 0) {
+      //      rino.vx = 0;
+      //    }
+      //  };
+       //
+       // // 下
+       // down.press = function() {
+       //
+       // };
+       // down.release = function() {
+       //   if (!up.isDown && rino.vx === 0) {
+       //     rino.vy = 0;
+       //   }
+       // };
 
-       // 左
-       left.press = function() {
-         rino.vx = -5;
-         rino.vy = 0;
-       };
-       left.release = function() {
-         if (!right.isDown && rino.vy === 0) {
-           rino.vx = 0;
-         }
-       };
-
-       // 上
-       up.press = function() {
-         rino.vy = -5;
-         rino.vx = 0;
-       };
-       up.release = function() {
-         if (!down.isDown && rino.vx === 0) {
+      function onKeyDown(e) {
+       // Display key information
+       switch (e.code) {
+         case 'ArrowLeft':
+         case 'KeyA':
+           rino.vx = -5;
            rino.vy = 0;
-         }
-       };
-
-       // 右
-       right.press = function() {
-         rino.vx = 5;
-         rino.vy = 0;
-       };
-       right.release = function() {
-         if (!left.isDown && rino.vy === 0) {
-           rino.vx = 0;
-         }
-       };
-
-       // 下
-       down.press = function() {
-         rino.vy = 5;
-         rino.vx = 0;
-       };
-       down.release = function() {
-         if (!up.isDown && rino.vx === 0) {
+           break;
+         case 'ArrowRight':
+         case 'KeyD':
+           rino.vx = 5;
            rino.vy = 0;
-         }
-       };
+           break;
+         case 'ArrowUp':
+         case 'KeyW':
+           rino.vy = -5;
+           rino.vx = 0;
+           break;
+         case 'ArrowDown':
+         case 'KeyS':
+           rino.vy = 5;
+           rino.vx = 0;
+           break;
+       }
+       // Prevent the keyboard events from bubbling up to the broser itself
+       e.preventDefault();
+      };
 
       state = play;
 

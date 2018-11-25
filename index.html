@@ -112,34 +112,6 @@
        //   }
        // };
 
-      function onKeyDown(e) {
-       // Display key information
-       switch (e.code) {
-         case 'ArrowLeft':
-         case 'KeyA':
-           rino.vx = -5;
-           rino.vy = 0;
-           break;
-         case 'ArrowRight':
-         case 'KeyD':
-           rino.vx = 5;
-           rino.vy = 0;
-           break;
-         case 'ArrowUp':
-         case 'KeyW':
-           rino.vy = -5;
-           rino.vx = 0;
-           break;
-         case 'ArrowDown':
-         case 'KeyS':
-           rino.vy = 5;
-           rino.vx = 0;
-           break;
-       }
-       // Prevent the keyboard events from bubbling up to the broser itself
-       e.preventDefault();
-      };
-
       state = play;
 
       gameLoop();
@@ -159,6 +131,34 @@
       rino.x += rino.vx;
       rino.y += rino.vy;
     }
+
+    function onKeyDown(e) {
+     // Display key information
+     switch (e.code) {
+       case 'ArrowLeft':
+       case 'KeyA':
+         rino.vx = -5;
+         rino.vy = 0;
+         break;
+       case 'ArrowRight':
+       case 'KeyD':
+         rino.vx = 5;
+         rino.vy = 0;
+         break;
+       case 'ArrowUp':
+       case 'KeyW':
+         rino.vy = -5;
+         rino.vx = 0;
+         break;
+       case 'ArrowDown':
+       case 'KeyS':
+         rino.vy = 5;
+         rino.vx = 0;
+         break;
+     }
+     // Prevent the keyboard events from bubbling up to the broser itself
+     e.preventDefault();
+    };
 
     window.onresize = function () {
       renderer.resize(window.innerWidth, window.innerHeight);

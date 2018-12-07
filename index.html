@@ -55,7 +55,8 @@
       renderer.resize(window.innerWidth, window.innerHeight);
 
       kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]);
-      rino = new Sprite(resources["img/rino_3.png"].texture);
+      // rino = new Sprite(resources["img/rino_3.png"].texture);
+      rino = TileSet("img/rino_3.png",128,128,64,64);
 
       stage.addChild(kokkoro);
       stage.addChild(rino);
@@ -123,6 +124,19 @@
     window.onresize = function () {
       renderer.resize(window.innerWidth, window.innerHeight);
     };
+
+    function TileSet(texname,x,y,xx,yy){
+
+      var texture = TextureCache[texname];
+
+      var rectangle = new Rectangle(x, y, xx, yy);
+
+      texture.frame = rectangle;
+
+      var TmpSp = new Sprite(texture);
+
+      return TmpSp;
+    }
 
 </script>
 </body>

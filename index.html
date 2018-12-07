@@ -56,7 +56,15 @@
 
       kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]);
       // rino = new Sprite(resources["img/rino_3.png"].texture);
-      rino = TileSet(TextureCache["img/rino_3.png"],128,128,64,64);
+      //rino = TileSet(TextureCache["img/rino_3.png"],128,128,64,64);
+
+      var texture = TextureCache["img/rino_3.png"];
+
+      var rectangle = new Rectangle(128, 128, 64, 64);
+
+      texture.frame = rectangle;
+
+      rino = new Sprite(texture);
 
       stage.addChild(kokkoro);
       stage.addChild(rino);

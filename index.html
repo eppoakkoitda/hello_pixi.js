@@ -46,7 +46,8 @@
       ])
       .load(setup);
 
-    var kokkoro,rino;
+    var kokkoro,
+        rino = [];
 
     function setup() {
       renderer.view.style.position = "absolute";
@@ -56,21 +57,19 @@
 
       kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]);
       // rino = new Sprite(resources["img/rino_3.png"].texture);
-      //rino = TileSet(TextureCache["img/rino_3.png"],128,128,64,64);
-
-      rino= new Sprite(resources["img/rino_3.png"].texture);
-      const rectangle     = new PIXI.Rectangle(128, 128, 64, 64);
-      rino.texture.frame = rectangle;
+      rino = setChara8("img/rino_3.png",stage);
+      //const rectangle     = new PIXI.Rectangle(128, 128, 64, 64);
+      //rino.texture.frame = rectangle;
 
 
       stage.addChild(kokkoro);
-      stage.addChild(rino);
+      // stage.addChild(rino);
 
       kokkoro.position.set(50, 0);
-      rino.position.set(0, 128);
+      rino[0][0].position.set(0, 128);
 
-      rino.vx = 0;
-      rino.vy = 0;
+      // rino.vx = 0;
+      // rino.vy = 0;
 
       state = play;
 
@@ -88,57 +87,68 @@
     }
 
     function play(){
-      rino.x += rino.vx;
-      rino.y += rino.vy;
+      // rino.x += rino.vx;
+      // rino.y += rino.vy;
     }
 
     function onKeyDown(e) {
-     // Display key information
-     switch (e.code) {
-       case 'ArrowLeft':
-       case 'KeyA':
-         rino.vx = -5;
-         rino.vy = 0;
-         break;
-       case 'ArrowRight':
-       case 'KeyD':
-         rino.vx = 5;
-         rino.vy = 0;
-         break;
-       case 'ArrowUp':
-       case 'KeyW':
-         rino.vy = -5;
-         rino.vx = 0;
-         break;
-       case 'ArrowDown':
-       case 'KeyS':
-         rino.vy = 5;
-         rino.vx = 0;
-         break;
+     // switch (e.code) {
+     //   case 'ArrowLeft':
+     //   case 'KeyA':
+     //     rino.vx = -5;
+     //     rino.vy = 0;
+     //     break;
+     //   case 'ArrowRight':
+     //   case 'KeyD':
+     //     rino.vx = 5;
+     //     rino.vy = 0;
+     //     break;
+     //   case 'ArrowUp':
+     //   case 'KeyW':
+     //     rino.vy = -5;
+     //     rino.vx = 0;
+     //     break;
+     //   case 'ArrowDown':
+     //   case 'KeyS':
+     //     rino.vy = 5;
+     //     rino.vx = 0;
+     //     break;
      }
-     // Prevent the keyboard events from bubbling up to the broser itself
+
      e.preventDefault();
     };
 
     function onKeyUp(e){
-      rino.vx = 0;
-      rino.vy = 0;
-      e.preventDefault();
+      // rino.vx = 0;
+      // rino.vy = 0;
+      // e.preventDefault();
     }
 
     window.onresize = function () {
       renderer.resize(window.innerWidth, window.innerHeight);
     };
 
-    function TileSet(texture,x,y,xx,yy){
+    function SetChara8(tex,rdr){
 
-      var rectangle = new Rectangle(x, y, xx, yy);
+      var cimg = new Image();
+      cimg.src = tex;//高さと幅を取得したいURLを入力
 
-      texture.frame = rectangle;
+      var cx  = cimg.width;  // 幅
+      var cy = cimg.height; // 高さ
 
-      var TmpSp = new Sprite(texture);
+      var tmpChar = [];
 
-      return TmpSp;
+      for(var i = 0; i < 4; i++){
+        tmpChar[i] = [];
+        for(var j = 0; j<6; j++){
+          tmpChar[i][j] = new Sprite(resources[tex].texture);
+          var rectangle     = new PIXI.Rectangle(cx/6*j, cy/4*i, cx/6, cy/4);
+          tmpChar[i][j].texture.frame = rectangle;
+          rdr.addChild(tmpChar[i][j])
+        }
+      }
+
+      return tmpChar;
     }
 
 </script>

@@ -58,13 +58,13 @@
       // rino = new Sprite(resources["img/rino_3.png"].texture);
       //rino = TileSet(TextureCache["img/rino_3.png"],128,128,64,64);
 
-      const tilesetSprite = new Sprite(resources["img/rino_3.png"].texture);
+      const rino= new Sprite(resources["img/rino_3.png"].texture);
       const rectangle     = new PIXI.Rectangle(128, 128, 64, 64);
-      tilesetSprite.texture.frame = rectangle;
-      stage.addChild(tilesetSprite);
+      rino.texture.frame = rectangle;
+
 
       stage.addChild(kokkoro);
-      //stage.addChild(rino);
+      stage.addChild(rino);
 
       kokkoro.position.set(50, 0);
       rino.position.set(0, 128);

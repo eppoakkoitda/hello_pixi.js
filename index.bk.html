@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+   <meta charset="UTF-8" auther="eppo">
+   <title>Start with pixi.js</title>
+   <style>
+     html{
+       height: 100%;
+     }
+     body{
+       height: 100%;
+       padding: 0;
+       margin: 0;
+     }
+   </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.3/pixi.min.js"></script>
+<script type="text/javascript">
+
+    var Container = PIXI.Container,
+    autoDetectRenderer = PIXI.autoDetectRenderer,
+    loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    Sprite = PIXI.Sprite;
+
+    var type = "WebGL";
+    if(!PIXI.utils.isWebGLSupported()){
+      type = "canvas"
+    }
+    PIXI.utils.sayHello(type);
+
+    // 新しいレンダラー作る
+    var stage = new Container(),
+        renderer = autoDetectRenderer(256, 256);
+
+    // それをHTMLファイルに入れる
+    document.body.appendChild(renderer.view);
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+
+    // loader
+    //   .add("img/rino_3.png")
+    //   .load(setup0);
+    //
+    // function setup0(){
+    //    rino = new Sprite(resources["img/rino_3.png"].texture);
+    //    rino.position.set(0, 0);
+    //    stage.addChild(rino);
+    // }
+
+    loader
+      .add("img/rino_3.png")
+      .add("img/FSM_01-A_01.png")
+      .load(setup);
+
+    var rino = [],
+        test = {};
+
+    function setup() {
+      renderer.view.style.position = "absolute";
+      renderer.view.style.display = "block";
+      renderer.autoResize = true;
+      renderer.resize(window.innerWidth, window.innerHeight);
+
+      //kokkoro = new Sprite(resources["img/kokkoro.json"].textures["test_0-0.png"]);
+      // rino = new Sprite(resources["img/rino_3.png"].texture);
+      //rino = setChara8("img/rino_3.png",stage);
+
+      //setChara8("img/FSM_01-A_01.png", stage, test);
+
+      //let texture = PIXI.Texture.fromImage('test1');
+
+      //test.position.set(0, 0);
+
+      //const rectangle     = new PIXI.Rectangle(128, 128, 64, 64);
+      //rino.texture.frame = rectangle;
+
+
+      //stage.addChild(kokkoro);
+      // stage.addChild(rino);
+
+      //kokkoro.position.set(50, 0);
+      //rino[0][0].position.set(100, 100);
+
+      // test[0][1].position.set(0, 0);
+      // test[0][4].position.set(32, 0);
+      // test[1][1].position.set(64, 0);
+      // test[1][4].position.set(96, 0);
+      //
+      // test[2][1].position.set(128, 0);
+      // test[2][4].position.set(160, 0);
+      // test[3][1].position.set(192, 0);
+      // test[3][4].position.set(224, 0);
+
+      // rino.vx = 0;
+      // rino.vy = 0;
+      test.set = setChara8;
+      test.x = 0;
+      test.y = 0;
+      test = test.set("img/FSM_01-A_01.png", stage, 0, Math.floor(Math.random() * 4));
+
+      state = play;
+
+      gameLoop();
+
+    }
+
+    function gameLoop(){
+
+      requestAnimationFrame(gameLoop);
+      state();
+
+      renderer.render(stage);
+
+    }
+
+    function play(){
+      //test.set("img/FSM_01-A_01.png", stage, 0, Math.floor(Math.random() * 4));
+      test.x += 1;
+      // rino.x += rino.vx;
+      // rino.y += rino.vy;
+    }
+
+    function onKeyDown(e) {
+     // switch (e.code) {
+     //   case 'ArrowLeft':
+     //   case 'KeyA':
+     //     rino.vx = -5;
+     //     rino.vy = 0;
+     //     break;
+     //   case 'ArrowRight':
+     //   case 'KeyD':
+     //     rino.vx = 5;
+     //     rino.vy = 0;
+     //     break;
+     //   case 'ArrowUp':
+     //   case 'KeyW':
+     //     rino.vy = -5;
+     //     rino.vx = 0;
+     //     break;
+     //   case 'ArrowDown':
+     //   case 'KeyS':
+     //     rino.vy = 5;
+     //     rino.vx = 0;
+     //     break;
+     //}
+
+     e.preventDefault();
+    };
+
+    function onKeyUp(e){
+      // rino.vx = 0;
+      // rino.vy = 0;
+      // e.preventDefault();
+    }
+
+    window.onresize = function () {
+      renderer.resize(window.innerWidth, window.innerHeight);
+    };
+
+    function setChara8(tex,rdr,x,y){
+
+      var cimg = new Image();
+      cimg.src = tex;//高さと幅を取得したいURLを入力
+
+      var cx  = cimg.width;  // 幅
+      var cy = cimg.height; // 高さ
+
+      var tmpChar = new Sprite(resources[tex].texture);
+      var rectangle = new PIXI.Rectangle(cx/6*x, cy/4*y, cx/6, cy/4);
+      tmpChar.texture.frame = rectangle;
+      tmpChar.position.set(this.x, this.y);
+      rdr.addChild(tmpChar);
+
+      return tmpChar;
+
+    }
+
+
+</script>
+</body>
+</html>

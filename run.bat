@@ -1,1 +1,0 @@
-call index.html --allow-file-access-from-files

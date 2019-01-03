@@ -4,56 +4,133 @@ autoDetectRenderer = PIXI.autoDetectRenderer,
 loader = PIXI.loader,
 resources = PIXI.loader.resources,
 Sprite = PIXI.Sprite,
-Rectangle = PIXI.Rectangle;
+Rectangle = PIXI.Rectangle,
+Texture = PIXI.Texture,
+Texfrom = PIXI.Texture.from,
+AnimatedSprite = PIXI.extras.AnimatedSprite;
 
-let dpi_x = 1280,
-    dpi_y = 720;
+let dpi = {
+    x: 1280,
+    y: 720
+};
 
 let player = {
   x: 0,
-  y: 0
+  y: 0,
 };
 
 let map = {
-  tex: [0,0,0,0],
+  tex: [[0,0,0],[0,0,0],[0,0,0]],//まあ、textureというよりspriteの方が正しいわけだが
   x: 0,
   y: 0,
-  x_dir: 0,
-  y_dir: 0,
-  x_disp: 0,
-  y_disp: 0,
   load: (x, y) => {
     let tx;
     let ty;
-    map.x = Math.floor(x / dpi_x);
-    map.y = Math.floor(y / dpi_y);
-    tx = map.x_disp = x % dpi_x;
-    ty = map.y_disp = y % dpi_y;
-    map.x_dir = (map.x_disp >= dpi_x / 2) ? 1 : -1;
-    map.y_dir = (map.y_disp >= dpi_y / 2) ? 1 : -1;
-    console.log("mapload :");
-    console.log("img/base_" + map.x + "_" + map.y + ".png");
-    console.log("img/base_" + (map.x + map.x_dir) + "_" + map.y + ".png");
-    console.log("img/base_" + map.x + "_" + (map.y + map.y_dir) + ".png");
-    console.log("img/base_" + (map.x + map.x_dir) + "_" + (map.y + map.y_dir) + ".png");
-    map.tex[0] = Sprite.fromImage("img/base_" + map.x + "_" + map.y + ".png");
-    map.tex[1] = Sprite.fromImage("img/base_" + (map.x + map.x_dir) + "_" + map.y + ".png");
-    map.tex[2] = Sprite.fromImage("img/base_" + map.x + "_" + (map.y + map.y_dir) + ".png");
-    map.tex[3] = Sprite.fromImage("img/base_" + (map.x + map.x_dir) + "_" + (map.y + map.y_dir) + ".png");
-    // loader
-    //   .add("img/base_" + map_x + "_" + map_y + ".png")
-    //   .add("img/base_" + (map_x + x_dir) + "_" + map_y + ".png")
-    //   .add("img/base_" + map_x + "_" + (map_y + y_dir) + ".png")
-    //   .add("img/base_" + (map_x + x_dir) + "_" + (map_y + y_dir) + ".png");
-    map.tex[0].position.set(tx,ty);
-    map.tex[1].position.set(tx + (dpi_x * map.x_dir), ty);
-    map.tex[2].position.set(tx, map.y + ty + (dpi_y * map.y_dir));
-    map.tex[3].position.set(tx + (dpi_x * map.x_dir), ty + (dpi_y * map.y_dir));
+    map.x = Math.floor(x / dpi.x);
+    map.y = Math.floor(y / dpi.y);
+    if(map.x > -1 && map.x < 2){//マップ端ではロードしない　バグる
+      if(map.y > -1 && map.y < 1){
+        tx = x % dpi.x - dpi.x / 2;
+        ty = y % dpi.y - dpi.y / 2;
+        console.log("mapload")
+        document.dispatchEvent(ev_mapload);
+        for(let i = 0; i < 3; i++){
+          for(let j = 0; j < 3; j++){
+            var pass = "img/base_" + (map.x + i - 1) + "_" + (map.y + j - 1) + ".png";
+            map.tex[i][j] = new Sprite.from(pass);
+            map.tex[i][j].position.set(-tx + dpi.x * (i - 1), -ty + dpi.y * (j - 1));
+          }
+        }
+      }
+    }
   },
   addch: (container) => {
-    container.addChild(map.tex[0]);
-    container.addChild(map.tex[1]);
-    container.addChild(map.tex[2]);
-    container.addChild(map.tex[3]);
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 3; j++){
+        container.addChild(map.tex[i][j]);
+      }
+    }
+  },
+  rmvch: (container) => {
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 3; j++){
+        container.removeChild(map.tex[i][j]);
+      }
+    }
+  },
+  move: (x, y, container) =>{
+    player.x += x;
+    player.y += y;
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 3; j++){
+        map.tex[i][j].x -= x;
+        map.tex[i][j].y -= y;
+      }
+    }
+    if(map.tex[1][1].x < -dpi.x || map.tex[1][1].x > dpi.x){
+      console.log("reload =>");
+      map.rmvch(container);
+      map.load(player.x, player.y);
+      map.addch(container);
+    }else if(map.tex[1][1].y < -dpi.y || map.tex[1][1].y > dpi.y){
+      console.log("reload =>");
+      map.rmvch(container);
+      map.load(player.x, player.y);
+      map.addch(container);
+    }
   }
+}
+
+document.addEventListener('mapload', function(e) { console.log(e, e.detail); }, false);
+
+let ev_mapload = new CustomEvent('mapload', {
+  detail: {
+    x: map.x,
+    y: map.y
+  }
+});
+
+let Characters = {
+  data: [],
+  load: (x,y) => {
+
+  },
+  add: (id, x, y, CharaObject) => {
+    Characters.data[id] = CharaObject;
+  },
+  remove: (id) => {
+    Characters.data[id] = null;
+  },
+  move: (id, x, y) => {
+    Characters.data[id].move(x, y);
+  }
+}
+
+class Chara8{
+  constructor(pass) {
+    let texArray = [];
+    this.animatedSprite = [];
+    for(let i = 0; i < 4; i++){
+      for(let j = 0; j < 2; j++){
+        texArray[i+j*4] = [];
+        for(let k = 0; k < 3; k++){
+          texArray[i+j*4][k] = Texture.from(pass + "_" + i + "_" + ( k + j*3 ) + ".png");
+        }
+        texArray[i+j*4][3] = texArray[i+j*4][1];
+
+        this.animatedSprite[i+(j*4)] = new AnimatedSprite(texArray[i+j*4]);
+        this.animatedSprite[i+(j*4)].play();
+        this.animatedSprite[i+(j*4)].animationSpeed = 0.1;
+        this.animatedSprite[i+(j*4)].x = 50*i;
+        this.animatedSprite[i+(j*4)].y = 50*j;
+        stage.addChild(this.animatedSprite[i+(j*4)]);
+      }
+    }
+    console.log(texArray);
+    console.log(this.animatedSprite);
+  }
+  move(x, y){
+    
+  }
+
 }

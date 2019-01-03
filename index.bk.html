@@ -167,8 +167,11 @@
 
       var cx  = cimg.width;  // 幅
       var cy = cimg.height; // 高さ
+      console.log(cimg, cimg.width, cimg.height)
 
-      var tmpChar = new Sprite(resources[tex].texture);
+      //var tmpChar = new Sprite(resources[tex].texture);
+      var tmpChar = new Sprite.from(tex);
+      console.log(tmpChar._texture.baseTexture.realHeight);
       var rectangle = new PIXI.Rectangle(cx/6*x, cy/4*y, cx/6, cy/4);
       tmpChar.texture.frame = rectangle;
       tmpChar.position.set(this.x, this.y);

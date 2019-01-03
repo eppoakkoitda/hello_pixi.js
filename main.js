@@ -6,34 +6,84 @@ PIXI.utils.sayHello(type);
 
 let stage = new Container();
 
-stage.scale.x = stage.scale.y = window.innerWidth / dpi_x;
-
-let renderer = autoDetectRenderer(dpi_x, dpi_y);
+let renderer = autoDetectRenderer(dpi.x, dpi.y);
 renderer.view.style.position = "absolute";
 renderer.view.style.display = "block";
 renderer.autoResize = true;
-renderer.resize(dpi_x * (window.innerWidth / dpi_x), dpi_y * (window.innerWidth / dpi_x));
+fitscreen();
 
 document.body.appendChild(renderer.view);
 
-map.load(1280 + 639, 720 + 359);
+document.addEventListener('keydown', onKeyDown);
+document.addEventListener('keyup', onKeyUp);
 
-map.addch(stage);
+window.onresize = () => {
+  fitscreen();
+};
 
-let i = 0;
+function fitscreen(){
+  var scale = window.innerWidth / dpi.x;
+  if(window.innerHeight < scale * dpi.y){
+    scale = window.innerHeight / dpi.y;
+  }
+  stage.scale.x = stage.scale.y = scale;
+  renderer.resize(dpi.x * scale, dpi.y * scale);
+}
 
-gameLoop();
+loader
+  .add("img/FSM_01-A_01.json")
+  .add("img/kokkoro.png")
+  .load(setup);
+
+function setup(){
+  player.x = 0;
+  player.y = 0;
+
+  map.load(player.x, player.y);
+  map.addch(stage);
+
+  Characters.add(0, 0, 0, new Chara8("FSM_01-A_01"));
+  Characters.remove(0);
+  console.log(Characters);
+  //let syujinko2 = new Chara8("img/kokkoro.png",400,400);
+  let vx = 0, vy = 0;
+
+
+  gameLoop();
+}
 
 function gameLoop(){
-
-  i++;
-
-  map.load(1280 + 639 - i, 720 + 359 - i);
-
-  map.addch(stage);
 
   renderer.render(stage);
 
   requestAnimationFrame(gameLoop);
 
+}
+
+function onKeyDown(e) {
+ switch (e.code) {
+   case 'ArrowLeft':
+   case 'KeyA':
+     vx = -50;
+     break;
+   case 'ArrowRight':
+   case 'KeyD':
+     vx = 50;
+     break;
+   case 'ArrowUp':
+   case 'KeyW':
+     vy = -50;
+     break;
+   case 'ArrowDown':
+   case 'KeyS':
+     vy = 50;
+     break;
+ }
+ map.move(vx, vy, stage);
+
+ e.preventDefault();
+};
+
+function onKeyUp(e){
+  vx = vy = 0;
 }

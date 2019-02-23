@@ -5,6 +5,8 @@ if(!PIXI.utils.isWebGLSupported()){
 PIXI.utils.sayHello(type);
 
 let stage = new Container();
+let sPlayer = new Container();
+let sUI = new Container();
 
 let renderer = autoDetectRenderer(dpi.x, dpi.y);
 renderer.view.style.position = "absolute";
@@ -12,22 +14,38 @@ renderer.view.style.display = "block";
 renderer.autoResize = true;
 fitscreen();
 
+let debugmsg = new PIXI.Text(word, style);
+
+var word = "Hello World!";
+var style = {font:'bold 60pt Arial', fill:'black'};
+var textobj = new PIXI.Text(word, style);
+textobj.position.x = 60;
+textobj.position.y = 60;
+sUI.addChild(textobj);
+
+let psi0 = {x:400,y:400};
+let psi1 = {x:500,y:500};
+
 document.body.appendChild(renderer.view);
 
-document.addEventListener('keydown', onKeyDown);
-document.addEventListener('keyup', onKeyUp);
+document.body.addEventListener( "touchstart", function( event ) {
+	var touchObject = event.changedTouches[0] ;
+	var x = touchObject.pageX / dpi.scale ;
+	var y = touchObject.pageY / dpi.scale;
+  Characters.data[0].setDTT(x, y);
+} ) ;
 
 window.onresize = () => {
   fitscreen();
 };
 
 function fitscreen(){
-  var scale = window.innerWidth / dpi.x;
-  if(window.innerHeight < scale * dpi.y){
-    scale = window.innerHeight / dpi.y;
+  dpi.scale = window.innerWidth / dpi.x;
+  if(window.innerHeight < dpi.scale * dpi.y){
+    dpi.scale = window.innerHeight / dpi.y;
   }
-  stage.scale.x = stage.scale.y = scale;
-  renderer.resize(dpi.x * scale, dpi.y * scale);
+  stage.scale.x = stage.scale.y = dpi.scale;
+  renderer.resize(dpi.x * dpi.scale, dpi.y * dpi.scale);
 }
 
 loader
@@ -36,54 +54,30 @@ loader
   .load(setup);
 
 function setup(){
-  player.x = 0;
-  player.y = 0;
+  test_parameta = ["FSM_01-A_01",640,360,0,10,0.1,0,0];
+  test_parameta2 = [640,360];
+  Characters.add(0, new Player(test_parameta, test_parameta2));
+  console.log(Characters);
 
-  map.load(player.x, player.y);
+  map.load(Characters.data[0].map_x, Characters.data[0].map_y);
   map.addch(stage);
 
-  Characters.add(0, 0, 0, new Chara8("FSM_01-A_01"));
-  Characters.remove(0);
-  console.log(Characters);
-  //let syujinko2 = new Chara8("img/kokkoro.png",400,400);
-  let vx = 0, vy = 0;
+  console.log(textobj);
 
+  Characters.moveAll();
 
   gameLoop();
 }
 
 function gameLoop(){
 
+  Characters.data[0].moving();
+
+  textobj.text = Math.floor(Characters.data[0].map_x) + "," + Math.floor(Characters.data[0].map_y) + "," + Characters.data[0].containsArea(psi0, psi1);
+  stage.addChild(sPlayer);
+  stage.addChild(sUI);
   renderer.render(stage);
 
   requestAnimationFrame(gameLoop);
 
-}
-
-function onKeyDown(e) {
- switch (e.code) {
-   case 'ArrowLeft':
-   case 'KeyA':
-     vx = -50;
-     break;
-   case 'ArrowRight':
-   case 'KeyD':
-     vx = 50;
-     break;
-   case 'ArrowUp':
-   case 'KeyW':
-     vy = -50;
-     break;
-   case 'ArrowDown':
-   case 'KeyS':
-     vy = 50;
-     break;
- }
- map.move(vx, vy, stage);
-
- e.preventDefault();
-};
-
-function onKeyUp(e){
-  vx = vy = 0;
 }
